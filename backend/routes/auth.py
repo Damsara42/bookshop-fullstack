@@ -1,6 +1,6 @@
-from flask import blueprint
+from flask import Blueprint
 
-auth_routes = blueprint('auth', __name__)
+auth_routes = Blueprint('auth', __name__)
 
 @auth_routes.route('/test')
 def test():
