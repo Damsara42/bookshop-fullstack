@@ -8,7 +8,7 @@ def test():
     return "Auth route wrking"
 """
 # blueprint allows me to organize app into senction for example all auth routes in one file
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from db import get_connection
 import bcrypt
 
@@ -41,3 +41,37 @@ def register():
 
     # return a msg to the frontend
     return jsonify({"message": "User Registered Successfully"})
+
+@auth_routes.route('/login', methods=['POST'])
+def login():
+    data = request.json # gets data from frontend
+
+    # user data
+    email = data['email']
+    password = data['password']
+
+    # database
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM USERS WHERE EMAIL IS ?"
+        (email,)
+    )
+    user = cursor.fetchone()
+
+    conn.close()
+
+    if user: 
+        stored_passowrd = user.password
+
+        # comparison hash
+        if bcrypt.checkpw(password.encode('utf-8'), stored_passowrd.encode('utf-8')):
+
+            # create session
+            session['user_id'] = user.USER_ID
+            session['role'] = user.ROLE
+            
+            return jsonify({"message": "Login success"})
+    
+    return jsonify({"error": "Invalid credentials"}), 401
