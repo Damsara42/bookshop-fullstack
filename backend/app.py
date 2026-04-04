@@ -12,6 +12,9 @@ app = Flask(__name__)
 # front end conect
 CORS(app)
 
+# session
+app.config['SECRET_KEY'] = 'abababbabnananansjdakasnndo137892%$&%*&'
+
 # connecting auth route
 app.register_blueprint(auth_routes, url_prefix = '/auth')
 

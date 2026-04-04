@@ -75,3 +75,16 @@ def login():
             return jsonify({"message": "Login success"})
     
     return jsonify({"error": "Invalid credentials"}), 401
+
+# authorization to protect routes
+@auth_routes.route('/profile')
+def profile():
+    if 'user_id' not in session:
+        return jsonify ({"error": "Unauthorized"}), 401
+    
+    return jsonify ({"message": "Welcome!"}), 200
+
+""""
+if session.get('role') != 'admin':
+   return jsonify ({"error": "admin only"}), 403
+"""
