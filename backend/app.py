@@ -27,6 +27,7 @@ def test_db():
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("SELECT 1")
+        conn.close()
         return "Database Connected"
     except Exception as e:
         return str(e)
