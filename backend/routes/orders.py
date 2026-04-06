@@ -62,8 +62,71 @@ def checkout():
     conn.commit()
     conn.close()
 
-    return {
-        "message": "Order placed succesfully"
+    return jsonify ({
+        "message": "Order placed succesfully",
         "order_id": order_id,
         "total": total_price
-    }
+    })
+
+
+# view user orders
+@order_routes.route('/', methods=['GET'])
+def get_orders():
+    user_id = session.get_user()
+    if not user_id:
+        return jsonify ({"error": "Unauthorized"}), 401
+    
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT ORDER_ID, TOTAL_PRICE, STATUS, CREATED_AT FROM ORDERS WHERE USER_ID =?",
+        (user_id,)
+    )
+
+    orders = cursor.fetchall()
+
+    results = []
+    for order in orders:
+        results.append({
+            "order_id": order.order_id,
+            "total": float(order.total_price),
+            "status": order.status,
+            "date": str(order.created_at)
+        })
+
+    conn.close()
+    
+    return results
+
+
+@order_routes.route('/<int:order_id>', methods = "GET")
+def order_details(order_id):
+    user_id = session.get_user()
+    if not user:
+        return jsonify ({"error": "Unauthorized"}), 401
+    
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT BOOKS.TITLE, ORDER_ITEMS.QUANTITY, ORDER_ITEMS.PRICE FROM ORDER_ITEMS JOIN BOOKS ON ORDER_ITEMS.BOOK_ID = BOOKS.BOOK_ID WHERE ORDER_ITEMS.ORDER_ID=?",
+        (order_id,)
+    )
+
+    items = cursor.fetchall()
+
+    results = []
+    for item in items:
+        results.append({
+            "title": item.title,
+            "quantity": item.quantity,
+            "price": float(item.price)
+        })
+
+    conn.close()
+
+    return results
+
+
+

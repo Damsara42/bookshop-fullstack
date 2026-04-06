@@ -10,6 +10,8 @@ from db import get_connection
 from routes.books import book_routes
 # to connect to cart
 from routes.cart import cart_route
+# to connect to orders
+from routes.orders import order_routes
 
 #creating the app instance
 app = Flask(__name__)
@@ -25,6 +27,8 @@ app.register_blueprint(auth_routes, url_prefix = '/auth')
 app.register_blueprint(book_routes, url_prefix = '/books')
 # connect to cart route
 app.register_blueprint(cart_route, url_prefix = '/cart')
+# connect to order routes
+app.register_blueprint(order_routes, url_prefix='/orders')
 
 #testing route example
 @app.route('/')
