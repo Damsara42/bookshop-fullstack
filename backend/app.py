@@ -6,6 +6,10 @@ from flask_cors import CORS
 from routes.auth import auth_routes
 # to add the database connection
 from db import get_connection
+# to connect to book routes
+from routes.books import book_routes
+# to connect to cart
+from routes.cart import cart_route
 
 #creating the app instance
 app = Flask(__name__)
@@ -17,6 +21,10 @@ app.config['SECRET_KEY'] = 'abababbabnananansjdakasnndo137892%$&%*&'
 
 # connecting auth route
 app.register_blueprint(auth_routes, url_prefix = '/auth')
+# connect to books route
+app.register_blueprint(book_routes, url_prefix = '/books')
+# connect to cart route
+app.register_blueprint(cart_route, url_prefix = '/cart')
 
 #testing route example
 @app.route('/')

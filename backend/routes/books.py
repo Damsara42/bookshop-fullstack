@@ -3,6 +3,8 @@ from db import get_connection
 
 book_routes = Blueprint('books', __name__)
 
+
+#sselect all books
 @book_routes.route('/', methods=['GET'])
 def get_books():
     conn = get_connection()
@@ -24,6 +26,8 @@ def get_books():
     
     return jsonify(results)
 
+
+#select one book
 @book_routes.route('/<int:id>', method=['GET'])
 def get_book(id):
     conn = get_connection()
@@ -42,6 +46,8 @@ def get_book(id):
         "stock": book.STOCK
     }
 
+
+#add book
 @book_routes.route('/', methods=['POST'])
 def add_book():
     data = request.json
@@ -66,6 +72,8 @@ def add_book():
 
     return jsonify ({"message": "Book added successfully"})
 
+
+#update book
 @book_routes.route('/<int:id>', methods=['PUT'])
 def update_book(id):
     data = request.json
@@ -84,6 +92,7 @@ def update_book(id):
     return jsonify ({"message": "Book updated"})
 
 
+#delete book
 @book_routes.route('/<int:id>', method=['DELETE'])
 def delete_book(id):
     conn = get_connection()
