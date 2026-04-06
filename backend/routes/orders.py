@@ -103,7 +103,7 @@ def get_orders():
 @order_routes.route('/<int:order_id>', methods = "GET")
 def order_details(order_id):
     user_id = session.get_user()
-    if not user:
+    if not user_id:
         return jsonify ({"error": "Unauthorized"}), 401
     
     conn = get_connection()
