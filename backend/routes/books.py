@@ -25,7 +25,7 @@ def get_books():
     return jsonify(results)
 
 @book_routes.route('/<int:id>', method=['GET'])
-def get_book():
+def get_book(id):
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -65,3 +65,34 @@ def add_book():
     conn.close()
 
     return jsonify ({"message": "Book added successfully"})
+
+@book_routes.route('/<int:id>', methods=['PUT'])
+def update_book(id):
+    data = request.json
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "UPDATE BOOKS SET TITLE=?, AUTHOR=?, PRICE=?, STOCK=? WHERE BOOK_ID=?",
+        (data['title'], data['author'], data['price'], data['stock'], id) 
+    )
+
+    conn.commit()
+    conn.close()
+
+    return jsonify ({"message": "Book updated"})
+
+
+@book_routes.route('/<int:id>', method=['DELETE'])
+def delete_book(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM BOOKS WHERE BOOK_ID=?", (id,))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify ({"message": "Book deleted succesfully"})
+
