@@ -37,7 +37,7 @@ def add_to_cart():
 
     if item:
         cursor.execute(
-            "UPDATE CART SET QUANTITY = QUANTITY + ? WHERE CART_ID=?"
+            "UPDATE CART SET QUANTITY = QUANTITY + ? WHERE CART_ID=?",
             (quantity, item.id)
         )
     else:

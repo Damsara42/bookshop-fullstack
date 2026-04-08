@@ -28,7 +28,7 @@ def get_books():
 
 
 #select one book
-@book_routes.route('/<int:id>', method=['GET'])
+@book_routes.route('/<int:id>', methods=['GET'])
 def get_book(id):
     conn = get_connection()
     cursor = conn.cursor()
@@ -93,7 +93,7 @@ def update_book(id):
 
 
 #delete book
-@book_routes.route('/<int:id>', method=['DELETE'])
+@book_routes.route('/<int:id>', methods=['DELETE'])
 def delete_book(id):
     conn = get_connection()
     cursor = conn.cursor()
